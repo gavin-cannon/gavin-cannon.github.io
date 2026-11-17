@@ -1,0 +1,75 @@
+/* One palette, one accent, two fonts. Change the tokens, not the components. */
+:root {
+  --bg: #fbfaf7;
+  --surface: #f2f0ea;
+  --text: #1c1b18;
+  --muted: #6b675e;
+  --line: #e2ded4;
+  --accent: #2f6fed;
+
+  --font-body: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: ui-monospace, 'SF Mono', 'Cascadia Code', Menlo, Consolas, monospace;
+
+  --measure: 42rem;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #141412;
+    --surface: #1d1d1a;
+    --text: #ecebe6;
+    --muted: #9b978d;
+    --line: #2c2b27;
+    --accent: #7aa2ff;
+    color-scheme: dark;
+  }
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 1.0625rem/1.6 var(--font-body);
+}
+
+main, .site-header, .site-footer {
+  max-width: var(--measure);
+  margin-inline: auto;
+  padding-inline: 1rem;
+}
+
+a { color: var(--accent); text-underline-offset: 0.2em; }
+a:hover { text-decoration-thickness: 2px; }
+
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+
+h1, h2, h3 { line-height: 1.2; margin: 0 0 0.5rem; }
+h2 {
+  font: 600 0.8rem/1 var(--font-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-top: 3.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.mono { font-family: var(--font-mono); }
+.muted { color: var(--muted); }
+
+.tags { display: flex; flex-wrap: wrap; gap: 0.4rem; padding: 0; margin: 0.75rem 0 0; list-style: none; }
+.tags li {
+  font: 0.75rem/1 var(--font-mono);
+  padding: 0.35rem 0.5rem;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  color: var(--muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}

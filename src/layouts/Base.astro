@@ -1,0 +1,60 @@
+---
+import '../styles/global.css';
+import Footer from '../components/Footer.astro';
+import { site } from '../site';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = `${site.name} · ${site.role}`,
+  description = `${site.name} is a backend engineer building schemas, migrations, and APIs. ${site.status}.`,
+} = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+  </head>
+  <body>
+    <header class="site-header">
+      <a href="/" class="home mono">{site.name.split(' ').map((w) => w[0]).join('').toLowerCase()}_</a>
+      <nav aria-label="Main">
+        <a href="/#work">Work</a>
+        <a href="/#experience">Experience</a>
+        <a href={site.links.resume}>Résumé</a>
+      </nav>
+    </header>
+    <main>
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>
+
+<style>
+  .site-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-block: 1.5rem;
+  }
+  .home { color: var(--text); text-decoration: none; font-weight: 600; }
+  nav { display: flex; gap: 1.25rem; font-size: 0.95rem; }
+  nav a { color: var(--muted); text-decoration: none; }
+  nav a:hover { color: var(--text); }
+</style>

@@ -1,0 +1,88 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import { site, experience, education, stack } from '../site';
+
+// Drafts show while you run `npm run dev`, never on the live site.
+const projects = (await getCollection('projects', ({ data }) => import.meta.env.DEV || !data.draft))
+  .sort((a, b) => a.data.order - b.data.order);
+---
+
+<Base>
+  <section class="intro">
+    <h1>{site.name}</h1>
+    <p class="facts mono">
+      <span>{site.role}</span><span>{site.location}</span><span>{site.experience}</span><span class="open">{site.status}</span>
+    </p>
+    <p class="pitch">{site.pitch}</p>
+    <p class="cta">
+      <a class="button" href={`mailto:${site.links.email}`}>Get in touch</a>
+      <a href={site.links.resume}>Résumé</a>
+      <a href={site.links.github}>GitHub</a>
+      <a href={site.links.linkedin}>LinkedIn</a>
+    </p>
+  </section>
+
+  <section id="work">
+    <h2>Selected work</h2>
+    {projects.length > 0
+      ? projects.map((p) => <ProjectCard project={p} />)
+      : <p class="muted">Write-ups coming soon.</p>}
+  </section>
+
+  <section id="experience">
+    <h2>Experience</h2>
+    {experience.map((job) => (
+      <article class="job">
+        <div class="job-head">
+          <h3>{job.company}</h3>
+          <span class="mono muted">{job.dates}</span>
+        </div>
+        <p class="muted">{job.title} · {job.where}</p>
+        <ul>{job.bullets.map((b) => <li>{b}</li>)}</ul>
+        <ul class="tags">{job.stack.map((s) => <li>{s}</li>)}</ul>
+      </article>
+    ))}
+    <article class="job">
+      <div class="job-head">
+        <h3>{education.school}</h3>
+        <span class="mono muted">{education.dates}</span>
+      </div>
+      <p class="muted">{education.degree} · {education.note}</p>
+    </article>
+  </section>
+
+  <section id="stack">
+    <h2>Stack</h2>
+    <ul class="tags">{stack.map((s) => <li>{s}</li>)}</ul>
+  </section>
+
+  <section id="contact">
+    <h2>Contact</h2>
+    <p>If that sounds like someone your team needs, <a href={`mailto:${site.links.email}`}>{site.links.email}</a> is the fastest way to reach me.</p>
+  </section>
+</Base>
+
+<style>
+  .intro { padding-top: 3rem; }
+  h1 { font-size: clamp(2.25rem, 7vw, 3.25rem); letter-spacing: -0.02em; }
+  .facts { display: flex; flex-wrap: wrap; gap: 0.4rem 1rem; font-size: 0.8rem; color: var(--muted); margin: 0.75rem 0 1.5rem; }
+  .open { color: var(--accent); }
+  .pitch { font-size: 1.15rem; max-width: 36rem; }
+  .cta { display: flex; flex-wrap: wrap; align-items: center; gap: 1.25rem; margin-top: 1.75rem; }
+  .button {
+    background: var(--accent);
+    color: var(--bg);
+    padding: 0.6rem 1rem;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .job { padding-block: 1.25rem; border-top: 1px solid var(--line); }
+  .job-head { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.25rem 1rem; align-items: baseline; }
+  .job-head h3 { font-size: 1.1rem; margin: 0; }
+  .job .muted { margin: 0.25rem 0 0; font-size: 0.95rem; }
+  .job ul:not(.tags) { padding-left: 1.1rem; margin: 0.75rem 0 0; }
+  .job li + li { margin-top: 0.35rem; }
+</style>

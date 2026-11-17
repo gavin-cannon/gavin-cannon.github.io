@@ -1,0 +1,44 @@
+---
+import { site } from '../site';
+
+// The quiet engineer flex: build facts only other engineers will notice.
+// GITHUB_SHA is set automatically when GitHub Actions builds the site.
+const sha = process.env.GITHUB_SHA?.slice(0, 7) ?? 'local';
+const built = new Date().toISOString().slice(0, 10);
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="links">
+    <a href={`mailto:${site.links.email}`}>Email</a>
+    <a href={site.links.github}>GitHub</a>
+    <a href={site.links.linkedin}>LinkedIn</a>
+    <a href={site.links.resume}>Résumé</a>
+  </div>
+  <dl class="build mono">
+    <div><dt>built with</dt><dd>Astro</dd></div>
+    <div><dt>commit</dt><dd>{sha}</dd></div>
+    <div><dt>deployed</dt><dd>{built}</dd></div>
+  </dl>
+  <p class="muted small">© {year} {site.name}</p>
+</footer>
+
+<style>
+  .site-footer {
+    margin-top: 5rem;
+    padding-block: 2rem 3rem;
+    border-top: 1px solid var(--line);
+    font-size: 0.9rem;
+  }
+  .links { display: flex; flex-wrap: wrap; gap: 1.25rem; }
+  .build {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin: 1.5rem 0 1rem;
+    font-size: 0.75rem;
+  }
+  .build dt { color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+  .build dd { margin: 0.2rem 0 0; }
+  .small { font-size: 0.8rem; margin: 0; }
+</style>
